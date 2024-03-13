@@ -2,6 +2,7 @@ import {SafeAreaView} from "react-native";
 import {NavigationContainer} from "@react-navigation/native";
 import Main from "./Main.tsx";
 import React from "react";
+import {NativeBaseProvider} from "native-base";
 
 
 function Route(): React.JSX.Element {
@@ -13,10 +14,14 @@ function Route(): React.JSX.Element {
                 paddingTop: 0,
             }}
         >
-            <NavigationContainer>
-                <Main/>
-            </NavigationContainer>
+            <NativeBaseProvider>
+                <NavigationContainer>
+                    <Main/>
+                </NavigationContainer>
+            </NativeBaseProvider>
+
         </SafeAreaView>
     );
 }
+
 export default Route;
