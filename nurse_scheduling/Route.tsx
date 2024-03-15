@@ -3,6 +3,7 @@ import {NavigationContainer} from "@react-navigation/native";
 import Main from "./Main.tsx";
 import React from "react";
 import {NativeBaseProvider} from "native-base";
+import {AuthProvider} from "./src/providers/AuthProvider.js";
 
 
 function Route(): React.JSX.Element {
@@ -16,7 +17,9 @@ function Route(): React.JSX.Element {
         >
             <NativeBaseProvider>
                 <NavigationContainer>
-                    <Main/>
+                    <AuthProvider>
+                        <Main/>
+                    </AuthProvider>
                 </NavigationContainer>
             </NativeBaseProvider>
 

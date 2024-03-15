@@ -6,10 +6,11 @@ import ShiftSelect from "./src/pages/ShiftSelect.tsx";
 import ChangeShiftRequest from "./src/pages/ChangeShiftRequest.tsx";
 import MyProfile from "./src/pages/MyProfile.tsx";
 import ShiftSelectIcon from "./src/assets/icons/ShiftSelectIcon.tsx";
-import React from "react";
+import React, {useContext} from "react";
 import ChangeShiftRequestIcon from "./src/assets/icons/ChangeShiftRequestIcon.tsx";
 import ProfileIcon from "./src/assets/icons/ProfileIcon.tsx";
 import Login from "./src/pages/Login.tsx";
+import {AuthContext} from "./src/contexts/AuthContext.tsx";
 
 const Tabs = createBottomTabNavigator();
 
@@ -31,7 +32,6 @@ const HomePageStack = createStackNavigator<HomeStackParamList>();
 const ShiftSelectStack = createStackNavigator<ShiftSelectStackParamList>();
 const ChangeShiftStack = createStackNavigator<ChangeShiftParamList>();
 const ProfileStack = createStackNavigator<ProfileStackParamList>();
-const isAuth = false;
 const HomePageStackScreen = () => (
     <HomePageStack.Navigator>
         <HomePageStack.Screen
@@ -80,6 +80,7 @@ const ProfileStackScreen = () => (
 );
 
 export default function Main() {
+    const {isAuth} = useContext(AuthContext);
     return (
         !isAuth? <Login/>:
         <Tabs.Navigator

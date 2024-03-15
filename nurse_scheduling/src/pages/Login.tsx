@@ -1,10 +1,10 @@
 import {Avatar, Box, Center, Input, Icon, Pressable, Stack} from 'native-base';
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import { Icon as ThemedIcon} from '@rneui/themed';
-
 import {
     Text,
 } from 'react-native';
+import {AuthContext} from "../contexts/AuthContext.tsx";
 
 
 function Login(): React.JSX.Element {
@@ -14,13 +14,21 @@ function Login(): React.JSX.Element {
     const [password, setPassword] = useState<string>("");
     const [tcnoError, setTcnoError] = useState<string>("");
     const [show, setShow] = React.useState(false);
+    const [disabled, setDisabled] = React.useState(true);
+    const {setIsAuth} = useContext(AuthContext);
+
+    const handleLogin = () => {
+        setIsAuth(true);
+    }
     useEffect(() => {
         if (tcno?.length !== 11 && tcno.length !== 0) {
+            setDisabled(true);
             setTcnoError("TC Kimlik No 11 haneli olmak zorundadır.");
         } else {
+            setDisabled(false);
             setTcnoError("");
         }
-    }, [tcno.length]);
+    }, [tcno,disabled]);
 
 
     return (
@@ -33,7 +41,8 @@ function Login(): React.JSX.Element {
                     <Input w={{
                         base: "75%",
                         md: "25%"
-                    }} InputLeftElement={<Icon as={<ThemedIcon name="person" type="ionicon" />} size={5} ml="2" color="muted.400" />} placeholder="T.C Kimlik No" />
+                    }} InputLeftElement={<Icon as={<ThemedIcon name="person" type="ionicon" />} size={5} ml="2" color="muted.400" />}
+                           placeholder="T.C Kimlik No" onChangeText={setTcno}/>
                     <Input w={{
                         base: "75%",
                         md: "25%"
@@ -43,7 +52,7 @@ function Login(): React.JSX.Element {
                 </Stack>
             </Box>
             <Box mt={12}>
-                <Pressable style={{backgroundColor: "#4f90ff"}} rounded="8">
+                <Pressable style={{backgroundColor: disabled?'gray':"#4f90ff"}} disabled={disabled} rounded="8" onPress={()=>handleLogin()}>
                     <Box minWidth="45%" minHeight = "8">
                         <Text style={{color: "white", textAlign: "center", fontSize: 20}}>Giriş Yap</Text>
                     </Box>
