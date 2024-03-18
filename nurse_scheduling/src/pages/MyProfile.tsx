@@ -12,7 +12,7 @@ function MYProfile(): React.JSX.Element {
         department: "Dahiliye",
         profilePicture: "https://cdn-icons-png.flaticon.com/512/8496/8496122.png"
     }
-    
+
 
     return (
         <Box>
@@ -27,7 +27,7 @@ function MYProfile(): React.JSX.Element {
                                 <Text fontSize="2xl">{nurse.firstName}</Text>
                             </Box>
                             <Box>
-                                <Text bold fontSize="2xl">{nurse.lastName}</Text>
+                                <Text bold fontSize="2xl">{nurse.lastName.toUpperCase()}</Text>
                             </Box>
                         </VStack>
                     </Box>
@@ -37,18 +37,18 @@ function MYProfile(): React.JSX.Element {
             <Box >
                 <VStack space="6"  >
                     <HStack alignItems="center">
-                        <Text fontSize="md" ml="6">Departman    : </Text>
-                        <Input variant="outline" placeholder={nurse.department} isDisabled w={{
+                        <Text fontSize="md" ml="6">Departman      </Text>
+                        <Input variant="outline" placeholder={nurse.department}  w={{
                             base: "55%",
                             md: "25%"
-                        }}/>
+                        }} editable={false}/>
                     </HStack>
                     <HStack alignItems="center">
-                        <Text fontSize="md" ml="6">Doğum Tarihi: </Text>
-                        <Input variant="outline" placeholder={nurse.birthDate} isDisabled w={{
+                        <Text fontSize="md" ml="6">Doğum Tarihi  </Text>
+                        <Input variant="outline" placeholder={nurse.birthDate}  w={{
                             base: "55%",
                             md: "25%"
-                        }}/>
+                        }} editable={false}/>
                     </HStack>
                 </VStack>
             </Box>
