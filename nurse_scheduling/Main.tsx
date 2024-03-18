@@ -11,6 +11,7 @@ import ChangeShiftRequestIcon from "./src/assets/icons/ChangeShiftRequestIcon.ts
 import ProfileIcon from "./src/assets/icons/ProfileIcon.tsx";
 import Login from "./src/pages/Login.tsx";
 import {AuthContext} from "./src/contexts/AuthContext.tsx";
+import MyShifts from "./src/pages/MyShifts.tsx";
 
 const Tabs = createBottomTabNavigator();
 
@@ -21,12 +22,12 @@ type ShiftSelectStackParamList = {
 ShiftSelectScreen:undefined,
 }
 type ChangeShiftParamList = {
-MyShifts:undefined,
 ChangeShiftRequestScreen: undefined,
 }
 
 type ProfileStackParamList = {
 MyProfileScreen:undefined,
+MyShifts:undefined,
 }
 const HomePageStack = createStackNavigator<HomeStackParamList>();
 const ShiftSelectStack = createStackNavigator<ShiftSelectStackParamList>();
@@ -75,6 +76,11 @@ const ProfileStackScreen = () => (
             options={{
                 headerShown: false,
             }}
+        />
+        <ProfileStack.Screen
+            name="MyShifts"
+            component={MyShifts}
+            options={{headerShown: false}}
         />
     </ProfileStack.Navigator>
 );

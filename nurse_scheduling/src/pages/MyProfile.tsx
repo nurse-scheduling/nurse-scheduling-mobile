@@ -1,6 +1,8 @@
 import {Avatar, Box, Center, HStack, VStack, Text, Input, Pressable, Icon} from 'native-base';
 import React from 'react';
 import { Icon as ThemedIcon} from '@rneui/themed';
+import {useNavigation} from "@react-navigation/native";
+import {StackNavigationProp} from "@react-navigation/stack";
 
 
 
@@ -12,6 +14,7 @@ function MYProfile(): React.JSX.Element {
         department: "Dahiliye",
         profilePicture: "https://cdn-icons-png.flaticon.com/512/8496/8496122.png"
     }
+    const navigation = useNavigation<StackNavigationProp<any>>();
 
 
     return (
@@ -57,7 +60,7 @@ function MYProfile(): React.JSX.Element {
                 base: "85%",
                 md: "25%"
             }}>
-                <Pressable style={{backgroundColor: "gray"}} rounded="8">
+                <Pressable style={{backgroundColor: "gray"}} rounded="8" onPress={()=>{navigation.navigate("MyShifts",{screen:"Profile"})}}>
                     <HStack justifyContent="space-between" minHeight = "12" alignItems="center">
                         <HStack alignItems="center" space={1}>
                             <Icon as={<ThemedIcon name={"calendar-outline"} type="ionicon" />} size={6} ml="3"  />
