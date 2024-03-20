@@ -1,15 +1,13 @@
 import React from 'react';
-import {
-  View,
-    Text,
-} from 'react-native';
+import Header from "../components/Header.tsx";
+import {Center} from "native-base";
 
 function HomePage(): React.JSX.Element {
 
     return (
-        <View>
-            <Text>HomePage</Text>
-        </View>
+        <Center flex={1}>
+            <Header></Header>
+        </Center>
     );
 }
 

@@ -1,19 +1,14 @@
 import {Avatar, Box, Center, HStack, VStack, Text, Input, Pressable, Icon} from 'native-base';
-import React from 'react';
+import React, {useContext} from 'react';
 import { Icon as ThemedIcon} from '@rneui/themed';
 import {useNavigation} from "@react-navigation/native";
 import {StackNavigationProp} from "@react-navigation/stack";
+import {AuthContext} from "../contexts/AuthContext.tsx";
 
 
 
 function MYProfile(): React.JSX.Element {
-    const nurse = {
-        firstName: "Hüseyin Emre",
-        lastName: "Üğdül",
-        birthDate: "4 Haziran 2000",
-        department: "Dahiliye",
-        profilePicture: "https://cdn-icons-png.flaticon.com/512/8496/8496122.png"
-    }
+    const {nurse} = useContext(AuthContext);
     const navigation = useNavigation<StackNavigationProp<any>>();
 
 
@@ -22,7 +17,7 @@ function MYProfile(): React.JSX.Element {
             <Center>
                 <HStack space={4} alignItems="center" mt="9" mb="9">
                     <Box>
-                        <Avatar bg="#5F374B" source={{uri: nurse.profilePicture}} size="2xl" ></Avatar>
+                        <Avatar bg="#5F374B" source={{uri: nurse.pictureUrl}} size="2xl" ></Avatar>
                     </Box>
                     <Box>
                         <VStack>

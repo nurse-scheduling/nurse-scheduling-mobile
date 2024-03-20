@@ -23,9 +23,7 @@ function ShiftSelect(): React.JSX.Element {
     return (
 
         <Center flex={1}>
-
             <Header></Header>
-
             <Stack space={4} alignItems="center" paddingTop={16} >
                 {openDays.includes(today.getDate()) ? (
                     <>

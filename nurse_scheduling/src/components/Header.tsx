@@ -7,22 +7,22 @@ import {AuthContext} from "../contexts/AuthContext.tsx";
 
 export default function Header() {
 
-    const {userFirstName, userLastName, pictureUrl} = useContext(AuthContext);
+    const {nurse} = useContext(AuthContext);
     const navigation = useNavigation<StackNavigationProp<any>>();
 
     return (
 
-        <Box width="100%" alignItems="flex-end" paddingRight={6} position={"absolute"} top={0} zIndex={1}>
+        <Box width="100%" alignItems="flex-end" paddingRight={'12%'} position={"absolute"} top={0} zIndex={1}>
 
-            <HStack space={4} paddingTop={6} paddingBottom={6}>
-                <VStack alignItems="center" paddingRight={6}>
+            <HStack space={4} paddingTop={3} paddingBottom={6}>
+                <VStack alignItems="center" paddingRight={'12%'} paddingTop={1}>
                     <Text fontSize="lg">Hoş Geldiniz</Text>
-                    <Text bold fontSize="xl">{userFirstName} {userLastName}</Text>
+                    <Text bold fontSize="xl">{nurse.firstName} {nurse.lastName}</Text>
                 </VStack>
                 <Pressable onPress={() => {
                     navigation.navigate("MyProfile", {screen: "Profile"})
                 }}>
-                    <Avatar bg="#5F374B" source={{uri: pictureUrl}} size="lg"></Avatar>
+                    <Avatar bg="#5F374B" source={{uri: nurse.pictureUrl}} size="lg"></Avatar>
                 </Pressable>
             </HStack>
 
