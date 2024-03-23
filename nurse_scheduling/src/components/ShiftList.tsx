@@ -19,8 +19,6 @@ export default function ShiftList(props: Props) {
         }
     };
 
-
-
     return (
         <Center
             flexDirection="row"
@@ -29,7 +27,7 @@ export default function ShiftList(props: Props) {
             width={'100%'}
             paddingX={15}
             paddingY={15}
-            backgroundColor={'#c8e3ff'}>
+            backgroundColor={'blue.300'}>
             <Checkbox size="md" defaultIsChecked={checked} onChange={() => onChange()} value="blue" colorScheme='green'
                       aria-label={date}/>
             <Text fontSize={18} fontWeight={"bold"}>{date}</Text>

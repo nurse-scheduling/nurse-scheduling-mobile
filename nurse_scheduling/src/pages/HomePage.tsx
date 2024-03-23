@@ -1,13 +1,13 @@
 import React from 'react';
 import Header from "../components/Header.tsx";
-import {Center} from "native-base";
+import {Box} from "native-base";
 
 function HomePage(): React.JSX.Element {
 
     return (
-        <Center flex={1}>
+        <Box flex={1} backgroundColor={'white'}>
             <Header></Header>
-        </Center>
+        </Box>
     );
 }
 
