@@ -36,16 +36,16 @@ function MYProfile(): React.JSX.Element {
 
             <Box>
                 <VStack space="6">
-                    <HStack alignItems="center">
+                    <HStack alignItems="center" justifyContent={"space-between"}>
                         <Text fontSize="md" ml="6">Departman     </Text>
-                        <Input variant="outline" placeholder={nurse.department} w={{
+                        <Input variant="outline"  mr="12" placeholder={nurse.department} w={{
                             base: "55%",
                             md: "25%"
                         }} editable={false}/>
                     </HStack>
-                    <HStack alignItems="center">
+                    <HStack alignItems="center" justifyContent={"space-between"}>
                         <Text fontSize="md" ml="6">Doğum Tarihi </Text>
-                        <Input variant="outline" placeholder={nurse.birthDate} w={{
+                        <Input variant="outline" mr="12" placeholder={nurse.birthDate} w={{
                             base: "55%",
                             md: "25%"
                         }} editable={false}/>
