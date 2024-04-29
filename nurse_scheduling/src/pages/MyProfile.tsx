@@ -4,14 +4,20 @@ import {Icon as ThemedIcon} from '@rneui/themed';
 import {useNavigation} from "@react-navigation/native";
 import {StackNavigationProp} from "@react-navigation/stack";
 import {AuthContext} from "../contexts/AuthContext.tsx";
+import AsyncStorage from "@react-native-community/async-storage";
 
 
 function MYProfile(): React.JSX.Element {
     const {nurse} = useContext(AuthContext);
     const navigation = useNavigation<StackNavigationProp<any>>();
+    const {setIsAuth} = useContext(AuthContext);
 
     const navigateToMyShifts = () => {
         navigation.navigate("MyShiftsScreen", {screen: "Profile"});
+    }
+    const handleLogout  = async () => {
+        await AsyncStorage.clear();
+        setIsAuth(false);
     }
 
     return (
@@ -72,7 +78,7 @@ function MYProfile(): React.JSX.Element {
                 base: "85%",
                 md: "25%"
             }}>
-                <Pressable style={{backgroundColor: "red"}} rounded="8">
+                <Pressable style={{backgroundColor: "red"}} rounded="8" onPress={handleLogout}>
                     <HStack justifyContent="space-between" minHeight="9" alignItems="center">
                         <HStack alignItems="center" space={1}>
                             <Icon as={<ThemedIcon name={"log-out-outline"} type="ionicon"/>} size={6} ml="3"/>

@@ -1,4 +1,4 @@
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {createStackNavigator} from "@react-navigation/stack";
 import HomePage from "./src/pages/HomePage.tsx";
 import HomeIcon from "./src/assets/icons/HomeIcon.tsx";
@@ -10,9 +10,9 @@ import React, {useContext} from "react";
 import ChangeShiftRequestIcon from "./src/assets/icons/ChangeShiftRequestIcon.tsx";
 import ProfileIcon from "./src/assets/icons/ProfileIcon.tsx";
 import Login from "./src/pages/Login.tsx";
-import {AuthContext} from "./src/contexts/AuthContext.tsx";
 import MyShifts from "./src/pages/MyShifts.tsx";
 import CreateShiftRequest from "./src/pages/CreateShiftRequest.tsx";
+import {AuthContext} from "./src/contexts/AuthContext.tsx";
 
 const Tabs = createBottomTabNavigator();
 

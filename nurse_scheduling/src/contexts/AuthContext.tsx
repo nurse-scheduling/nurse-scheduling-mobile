@@ -38,6 +38,5 @@ export const AuthContext = createContext<AuthContextType>({
     },
     selectedDate: new Date().toLocaleDateString('tr-TR'),
     setSelectedDate: () => {
-
-    }
+    },
 });
