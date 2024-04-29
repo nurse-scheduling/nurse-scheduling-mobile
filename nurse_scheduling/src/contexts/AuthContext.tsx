@@ -1,42 +1,23 @@
-import {createContext} from "react";
-
-interface NurseShift {
-    start: Date;
-    end: Date;
-}
+import React, {createContext} from "react";
+import moment from "moment";
+import {NurseType} from "../types/NurseType.tsx";
 
 type AuthContextType = {
     isAuth: boolean;
     setIsAuth: (isAuth: boolean) => void;
-    nurse :{
-        firstName: string;
-        lastName: string;
-        pictureUrl: string;
-        department: string;
-        birthDate: string;
-        shifts: NurseShift[];
-    }
+    nurse :NurseType;
     selectedDate: string;
-    setSelectedDate: (date: string) => void;
+    setSelectedDate: React.Dispatch<React.SetStateAction<string>>;
+    credentials: string;
 }
 
 export const AuthContext = createContext<AuthContextType>({
     isAuth: false,
     setIsAuth: () => {
     },
-    nurse:{
-        firstName: "Test",
-        lastName: "Nurse",
-        pictureUrl: "https://cdn-icons-png.flaticon.com/512/8496/8496122.png",
-        department: "Dahiliye",
-        birthDate: "01.01.1990",
-        shifts: [{
-            start: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 16, 0),
-            end: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 1, 8, 0)
-        }
-        ]
-    },
-    selectedDate: new Date().toLocaleDateString('tr-TR'),
+    nurse:{id:"0", firstName:"", lastName:"", departmentName:"", phoneNumber:"", birthDate:"", profilePicture:"",role:"",tcKimlikNo:"",errorMessage:""},
+    selectedDate:moment().format("DD.MM.YYYY"),
     setSelectedDate: () => {
     },
+    credentials: ""
 });

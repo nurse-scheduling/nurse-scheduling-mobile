@@ -1,9 +1,12 @@
 import React, {useEffect, useState} from "react";
 import {AuthContext} from "../contexts/AuthContext";
 import AsyncStorage from "@react-native-community/async-storage";
+import {NurseType} from "../types/NurseType.tsx";
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [isAuth, setIsAuth] = useState(false);
+    const [credentials, setCredentials] = useState("");
+    const [nurse, setNurse] = useState({} as NurseType);
     useEffect(() => {
         const fetchAuthStatus = async () => {
             try {
@@ -19,19 +22,36 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         fetchAuthStatus();
     }, []);
 
-    const nurse = {
-        firstName: "Test",
-        lastName: "Nurse",
-        pictureUrl: "https://cdn-icons-png.flaticon.com/512/8496/8496122.png",
-        department: "Dahiliye",
-        birthDate: "01.01.1990",
-        shifts: [{
-            start: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), 16, 0),
-            end: new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 1, 8, 0)
-        }
-        ],
+    useEffect(() => {
+        const fetchCredentials = async () => {
+            try {
+                const credentials = await AsyncStorage.getItem("basicAuth");
+                if (credentials) {
+                    setCredentials(credentials);
+                }
+            } catch (error) {
+                console.error("Error fetching credentials:", error);
+            }
+        };
 
-    }
+        fetchCredentials();
+    },[]);
+
+    useEffect(() => {
+        const fetchNurse = async () => {
+            try {
+                const nurse = await AsyncStorage.getItem("nurse");
+                if (nurse) {
+                    setNurse(JSON.parse(nurse));
+                }
+            } catch (error) {
+                console.error("Error fetching nurse:", error);
+            }
+        };
+
+        fetchNurse();
+    },[]);
+
     const [selectedDate, setSelectedDate] = useState(new Date().toLocaleDateString('tr-TR'));
 
     return (
@@ -39,7 +59,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             setIsAuth,
             nurse,
             selectedDate,
-            setSelectedDate}}>
+            setSelectedDate,credentials}}>
             {children}
         </AuthContext.Provider>
     );

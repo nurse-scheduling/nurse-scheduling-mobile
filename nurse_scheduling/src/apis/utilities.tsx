@@ -35,6 +35,7 @@ export const useFetch = (url: string, credentials?: string | null) => {
 
     useEffect(() => {
         const fetchUrl = async () => {
+            setData(null);
             setIsLoading(true);
             try {
                 const headers: { [key: string]: string } = {
