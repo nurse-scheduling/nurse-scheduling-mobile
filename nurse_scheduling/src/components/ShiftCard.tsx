@@ -8,7 +8,7 @@ import moment from "moment";
 
 function ShiftCard() {
     const { selectedDate,credentials} = useContext(AuthContext);
-    const momentDate = moment(selectedDate,"DD.MM.YYYY").format("YYYY.MM.DD");
+    const momentDate = moment(selectedDate,"DD.MM.YYYY").format("YYYY-MM-DD");
     const {shift,isLoading} = useGetMyShifts(momentDate,credentials );
 
     const convertDate = (date: Date) => {
