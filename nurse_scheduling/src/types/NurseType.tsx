@@ -5,9 +5,10 @@ export type NurseType={
     tcKimlikNo: string,
     departmentName: string,
     role: string,
-    birthDate: string,
+    birthdate: string,
     phoneNumber: string,
-    profilePicture: string,
+    gender: string,
     errorMessage: string,
+    pictureUrl: string,
     [key: string]: string
 }

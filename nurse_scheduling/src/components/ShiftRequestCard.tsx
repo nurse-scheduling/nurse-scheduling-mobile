@@ -1,21 +1,10 @@
 import React  from "react";
 import {Box, Text, VStack} from "native-base";
 import ChangeShiftRequestIcon from "../assets/icons/ChangeShiftRequestIcon.tsx";
+import {ExchangeShiftRequestType} from "../types/ExchangeShiftRequestType.tsx";
 
 type Props={
-    Shift:{
-        id: string;
-        from: string;
-        to: string;
-        fromStartDate: string;
-        fromEndDate: string;
-        fromStartTime: string;
-        fromEndTime: string;
-        toStartDate: string;
-        toEndDate: string;
-        toStartTime: string;
-        toEndTime: string;
-    }
+    Shift:ExchangeShiftRequestType;
 }
 
 function ShiftRequestCard(Props:Props): React.JSX.Element {
@@ -33,25 +22,25 @@ function ShiftRequestCard(Props:Props): React.JSX.Element {
             <VStack space={3} alignItems={'center'} justifyContent={'center'} flexWrap={'wrap'}>
                 <VStack alignItems={'center'} space={1}>
                     <Text fontSize={20} maxWidth={200} textAlign={'center'}>
-                        {Props.Shift.to}
+                        {Props.Shift.requestedFullName}
                     </Text>
                     <Text fontSize={20}>
-                        {Props.Shift.toStartDate} - {Props.Shift.toStartTime}
+                        {Props.Shift.requestedShiftStartDate}
                     </Text>
                     <Text fontSize={20}>
-                        {Props.Shift.toEndDate} - {Props.Shift.toEndTime}
+                        {Props.Shift.requestedShiftEndDate}
                     </Text>
                 </VStack>
                 <ChangeShiftRequestIcon rotation={90} color={'black'} />
                 <VStack alignItems={'center'} space={1}>
                     <Text fontSize={20} maxWidth={200} textAlign={'center'}>
-                        {Props.Shift.from}
+                        {Props.Shift.requesterFullName}
                     </Text>
                     <Text fontSize={20}>
-                        {Props.Shift.fromStartDate} - {Props.Shift.fromStartTime}
+                        {Props.Shift.requesterShiftStartDate}
                     </Text>
                     <Text fontSize={20}>
-                        {Props.Shift.fromEndDate} - {Props.Shift.fromEndTime}
+                        {Props.Shift.requesterShiftEndDate}
                     </Text>
                 </VStack>
             </VStack>

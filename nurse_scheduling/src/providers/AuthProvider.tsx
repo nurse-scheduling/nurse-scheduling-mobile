@@ -10,9 +10,44 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     useEffect(() => {
         const fetchAuthStatus = async () => {
             try {
-                const authStatus = await AsyncStorage.getItem("authenticated");
-                if (authStatus === "true") {
-                    setIsAuth(true);
+                // Get authentication status and nurse info from AsyncStorage
+                const [authStatus, loginStatus, nurse, credentials] = await Promise.all([
+                    AsyncStorage.getItem("authenticated"),
+                    AsyncStorage.getItem("login-time"),
+                    AsyncStorage.getItem("nurse"),
+                    AsyncStorage.getItem("basicAuth")
+                ]);
+
+                if (loginStatus) {
+                    const currentTime = new Date().getTime();
+                    const storedTime = parseInt(loginStatus, 10);
+                    const differenceInMinutes = Math.floor((currentTime - storedTime) / (1000 * 60));
+                    if (differenceInMinutes >= 30) {
+                        await AsyncStorage.clear();
+                        setIsAuth(false);
+                        setNurse({} as NurseType);
+                        setCredentials("");
+                        return;
+                    }
+                }
+
+                setIsAuth(authStatus === "true");
+                if (nurse) {
+                    const nurseJson = JSON.parse(nurse) as NurseType;
+                    const pictureUrl = nurseJson.gender === "Kadın" ? "https://st3.depositphotos.com/1005049/37682/v/1600/depositphotos_376829398-stock-illustration-woman-doctor-icon-female-physician.jpg"
+                        :
+                        "https://st4.depositphotos.com/1005049/37803/v/1600/depositphotos_378039344-stock-illustration-doctor-icon-male-doctor-white.jpg"
+                    const updatedNurse = { ...nurseJson, pictureUrl: pictureUrl };
+                    setNurse(updatedNurse);
+                }
+                else{
+                    setIsAuth(false);
+                }
+
+                if (credentials) {
+                    setCredentials(credentials);
+                } else {
+                    setIsAuth(false);
                 }
             } catch (error) {
                 console.error("Error fetching auth status:", error);
@@ -21,36 +56,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
         fetchAuthStatus();
     }, []);
-
-    useEffect(() => {
-        const fetchCredentials = async () => {
-            try {
-                const credentials = await AsyncStorage.getItem("basicAuth");
-                if (credentials) {
-                    setCredentials(credentials);
-                }
-            } catch (error) {
-                console.error("Error fetching credentials:", error);
-            }
-        };
-
-        fetchCredentials();
-    },[]);
-
-    useEffect(() => {
-        const fetchNurse = async () => {
-            try {
-                const nurse = await AsyncStorage.getItem("nurse");
-                if (nurse) {
-                    setNurse(JSON.parse(nurse));
-                }
-            } catch (error) {
-                console.error("Error fetching nurse:", error);
-            }
-        };
-
-        fetchNurse();
-    },[]);
 
     const [selectedDate, setSelectedDate] = useState(new Date().toLocaleDateString('tr-TR'));
 

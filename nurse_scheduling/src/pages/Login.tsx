@@ -8,6 +8,7 @@ import {AuthContext} from "../contexts/AuthContext.tsx";
 import {login} from "../apis/auth.tsx";
 import {Buffer} from "buffer";
 import AsyncStorage from "@react-native-community/async-storage";
+import {NurseType} from "../types/NurseType.tsx";
 
 function Login(): React.JSX.Element {
 
@@ -25,12 +26,13 @@ function Login(): React.JSX.Element {
             console.error("Login error:", "Lütfen tüm alanları doldurunuz.");
             return;
         }
-        const response = await login(tcno, password);
-        if(response.errorMessage) {
-            setErrorMessage(response.error);
-            console.error("Login error:", response.error);
+        let response = await login(tcno, password) as NurseType;
+        if(response && response.errorMessage !== null) {
+            setErrorMessage(response.errorMessage);
+            console.error("Login error:", response.errorMessage);
             return;
         }
+
         const credentials = Buffer.from(`${tcno}:${password}`, 'utf-8').toString('base64');
         await AsyncStorage.setItem("nurse", JSON.stringify(response));
         await AsyncStorage.setItem("basicAuth", credentials);

@@ -15,7 +15,7 @@ export const AuthContext = createContext<AuthContextType>({
     isAuth: false,
     setIsAuth: () => {
     },
-    nurse:{id:"0", firstName:"", lastName:"", departmentName:"", phoneNumber:"", birthDate:"", profilePicture:"",role:"",tcKimlikNo:"",errorMessage:""},
+    nurse:{id:"0", firstName:"", lastName:"", departmentName:"", phoneNumber:"", birthdate:"", gender:"",role:"",tcKimlikNo:"",errorMessage:"",pictureUrl:""},
     selectedDate:moment().format("DD.MM.YYYY"),
     setSelectedDate: () => {
     },

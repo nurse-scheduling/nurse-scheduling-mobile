@@ -1,21 +1,25 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 
-export async function postFetch(url: string, payload: any, credentials?: string) {
+const fetchData = async (url: string, method: string, payload: any, credentials?: string | null) => {
     const headers: { [key: string]: string } = {
         'Content-Type': 'application/json',
         "Access-Control-Allow-Origin": "*",
     };
+
     if (credentials) {
         headers['Authorization'] = `Basic ${credentials}`;
     }
 
     const requestOptions = await fetch(url, {
-        method: 'POST',
+        method: method,
         headers: headers,
         body: JSON.stringify(payload),
     });
+    let response = {};
+    await requestOptions.text().then((text) => {
+        response = isJsonString(text) ? JSON.parse(text) : text;
+    });
 
-    const response = await requestOptions.json();
     if (requestOptions.status === 200) {
         return response;
     } else if (requestOptions.status === 400) {
@@ -28,7 +32,12 @@ export async function postFetch(url: string, payload: any, credentials?: string)
         throw new Error("Something went wrong");
     }
 }
-export const useFetch = (url: string, credentials?: string | null) => {
+
+export const postFetch = async (url: string, payload: any, credentials?: string) => {
+    return await fetchData(url, 'POST', payload, credentials);
+}
+
+export const useFetch = (url: string,isFocused:boolean, credentials?: string | null) => {
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState<any>();
     const [error, setError] = useState<string>();
@@ -46,11 +55,13 @@ export const useFetch = (url: string, credentials?: string | null) => {
                 if (credentials) {
                     headers['Authorization'] = `Basic ${credentials}`;
                 }
+
                 const requestOptions = {
                     method: "GET",
                     headers: headers,
                 };
                 const response = await fetch(url, requestOptions);
+                let responseData = undefined;
                 if (response.status === 400) {
                     setError("Bad Request");
                 }
@@ -60,7 +71,10 @@ export const useFetch = (url: string, credentials?: string | null) => {
                 if (!response.ok) {
                     setError(`Request failed with status ${response.status}`);
                 }
-                const responseData = await response.json();
+                await response.text().then((text) => {
+                    responseData = isJsonString(text) ? JSON.parse(text) : text;
+                });
+
                 setData(responseData);
             } catch (error: any) {
                 console.log(error);
@@ -73,39 +87,20 @@ export const useFetch = (url: string, credentials?: string | null) => {
         if (url) {
             fetchUrl();
         }
-
-    }, [url, credentials]);
+    }, [url, credentials,isFocused]);
 
     return { data, isLoading, error };
 };
 
-export async function patchFetch(url: string, payload: any, credentials?: string | null) {
-    const headers: { [key: string]: string } = {
-        'Content-Type': 'application/json',
-        "Access-Control-Allow-Origin": "*",
-    };
-
-    if (credentials) {
-        headers['Authorization'] = `Basic ${credentials}`;
-    }
-
-    const requestOptions = await fetch(url, {
-        method: 'PATCH',
-        headers: headers,
-        body: JSON.stringify(payload),
-    });
-
-    const response = await requestOptions.json();
-    if (requestOptions.status === 200) {
-        return response;
-    } else if (requestOptions.status === 400) {
-        throw new Error("Bad Request");
-    } else if (requestOptions.status === 401) {
-        throw new Error("Unauthorized");
-    } else if (requestOptions.status === 403) {
-        throw new Error("Forbidden");
-    } else {
-        throw new Error("Something went wrong");
-    }
+export const patchFetch = async (url: string, payload: any, credentials?: string | null) => {
+    return await fetchData(url, 'PATCH', payload, credentials);
 }
 
+const isJsonString=(str:string) =>{
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}

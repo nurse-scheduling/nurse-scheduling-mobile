@@ -31,7 +31,7 @@ const HomePageDateCard = () => {
         </TouchableOpacity>
     );
 
-    const keyExtractor = (item: moment.Moment) => item.format('YYYY-MM-DD');
+    const keyExtractor = (item: moment.Moment) => item.format('YYYY.MM.DD');
 
     return (
         <FlatList

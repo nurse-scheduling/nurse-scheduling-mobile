@@ -11,7 +11,6 @@ function MYProfile(): React.JSX.Element {
     const {nurse} = useContext(AuthContext);
     const navigation = useNavigation<StackNavigationProp<any>>();
     const {setIsAuth} = useContext(AuthContext);
-
     const navigateToMyShifts = () => {
         navigation.navigate("MyShiftsScreen", {screen: "Profile"});
     }
@@ -44,14 +43,14 @@ function MYProfile(): React.JSX.Element {
                 <VStack space="6">
                     <HStack alignItems="center" justifyContent={"space-between"}>
                         <Text fontSize="md" ml="6">Departman     </Text>
-                        <Input variant="outline"  mr="12" placeholder={nurse.department} w={{
+                        <Input variant="outline"  mr="12" placeholder={nurse.departmentName} w={{
                             base: "55%",
                             md: "25%"
                         }} editable={false}/>
                     </HStack>
                     <HStack alignItems="center" justifyContent={"space-between"}>
                         <Text fontSize="md" ml="6">Doğum Tarihi </Text>
-                        <Input variant="outline" mr="12" placeholder={nurse.birthDate} w={{
+                        <Input variant="outline" mr="12" placeholder={nurse.birthdate} w={{
                             base: "55%",
                             md: "25%"
                         }} editable={false}/>
