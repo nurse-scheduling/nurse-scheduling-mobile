@@ -14,7 +14,7 @@ export const useGetMyShifts = (date:string,credentials?:string) => {
 }
 
 export const useGetShiftsByDate = (date:string,credentials?:string) => {
-    const url = `${BASE_URL}/api/shifts/date?date=${date}`;
+    const url = `${BASE_URL}/api/shifts/other-shifts?date=${date}`;
     const {data,isLoading} = useFetch(url,credentials);
     let shifts: ShiftType[] | undefined;
     if (data) {
