@@ -1,14 +1,36 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Box, Center, FlatList, Text, Stack} from "native-base";
 import ShiftList from "../components/ShiftList.tsx";
 import Header from "../components/Header.tsx";
 import SmallButton from "../components/SmallButton.tsx";
 import {DaysOfAMonth} from "../dummy/DummyData.tsx";
+import {usePostWorkDays} from "../apis/workDays.tsx";
+import {AuthContext} from "../contexts/AuthContext.tsx";
+
 
 function ShiftSelect(): React.JSX.Element {
     const [selectedDays, setSelectedDays] = useState<string[]>([]);
     const today = new Date();
-    const openDays = [18, 23, 25, 26, 27, 28];
+    const openDays = [2, 23, 25, 26, 27, 28];
+    const { credentials, nurse } = useContext(AuthContext);
+
+    const loggedInNurseId = nurse.id;
+
+
+
+    const handleSelectedDays = () => {
+        const workDayTypes = selectedDays.map(date => ({
+
+            nurseId: loggedInNurseId,
+            workDate: date,
+        }));
+
+        usePostWorkDays(workDayTypes, credentials).then((response) => {
+            console.log(response);
+        }).catch((error) => {
+            console.log(error);
+        });
+    }
 
     return (
 
@@ -29,7 +51,7 @@ function ShiftSelect(): React.JSX.Element {
                         </Box>
                         <Box>
                             <SmallButton onPress={() => {
-                                console.log(selectedDays)
+                                handleSelectedDays();
                             }} text={"Günleri Gönder"} color={'blue.300'} textColor={'white'}/>
                         </Box>
                     </>
