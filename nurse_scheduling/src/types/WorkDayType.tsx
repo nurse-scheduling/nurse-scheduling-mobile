@@ -1,4 +1,3 @@
 export type WorkDayType={
-    nurseId: string,
-    workDate: string,
+    workDate: Date[],
 }

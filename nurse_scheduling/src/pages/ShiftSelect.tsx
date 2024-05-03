@@ -6,24 +6,23 @@ import SmallButton from "../components/SmallButton.tsx";
 import {DaysOfAMonth} from "../dummy/DummyData.tsx";
 import {usePostWorkDays} from "../apis/workDays.tsx";
 import {AuthContext} from "../contexts/AuthContext.tsx";
+import {WorkDayType} from "../types/WorkDayType.tsx";
+import moment from "moment/moment";
 
 
 function ShiftSelect(): React.JSX.Element {
     const [selectedDays, setSelectedDays] = useState<string[]>([]);
     const today = new Date();
-    const openDays = [2, 23, 25, 26, 27, 28];
-    const { credentials, nurse } = useContext(AuthContext);
-
-    const loggedInNurseId = nurse.id;
-
+    const openDays = [3, 23, 25, 26, 27, 28];
+    const { credentials } = useContext(AuthContext);
 
 
     const handleSelectedDays = () => {
-        const workDayTypes = selectedDays.map(date => ({
 
-            nurseId: loggedInNurseId,
-            workDate: date,
-        }));
+        let dateObjects: Date[] = selectedDays.map(dateString => moment(dateString, "DD.MM.YYYY").toDate());
+        const workDayTypes: WorkDayType = {
+            workDate: dateObjects,
+        };
 
         usePostWorkDays(workDayTypes, credentials).then((response) => {
             console.log(response);
