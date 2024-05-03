@@ -44,44 +44,46 @@ export const useFetch = (url: string,isFocused:boolean, credentials?: string | n
 
     useEffect(() => {
         const fetchUrl = async () => {
-            setData(null);
-            setIsLoading(true);
-            try {
-                const headers: { [key: string]: string } = {
-                    'Content-Type': 'application/json',
-                    "Access-Control-Allow-Origin": "*",
-                };
+           if(isFocused){
+               setData(null);
+               setIsLoading(true);
+               try {
+                   const headers: { [key: string]: string } = {
+                       'Content-Type': 'application/json',
+                       "Access-Control-Allow-Origin": "*",
+                   };
 
-                if (credentials) {
-                    headers['Authorization'] = `Basic ${credentials}`;
-                }
+                   if (credentials) {
+                       headers['Authorization'] = `Basic ${credentials}`;
+                   }
 
-                const requestOptions = {
-                    method: "GET",
-                    headers: headers,
-                };
-                const response = await fetch(url, requestOptions);
-                let responseData = undefined;
-                if (response.status === 400) {
-                    setError("Bad Request");
-                }
-                if (response.status === 401) {
-                    setError("Unauthorized");
-                }
-                if (!response.ok) {
-                    setError(`Request failed with status ${response.status}`);
-                }
-                await response.text().then((text) => {
-                    responseData = isJsonString(text) ? JSON.parse(text) : text;
-                });
+                   const requestOptions = {
+                       method: "GET",
+                       headers: headers,
+                   };
+                   const response = await fetch(url, requestOptions);
+                   let responseData = undefined;
+                   if (response.status === 400) {
+                       setError("Bad Request");
+                   }
+                   if (response.status === 401) {
+                       setError("Unauthorized");
+                   }
+                   if (!response.ok) {
+                       setError(`Request failed with status ${response.status}`);
+                   }
+                   await response.text().then((text) => {
+                       responseData = isJsonString(text) ? JSON.parse(text) : text;
+                   });
 
-                setData(responseData);
-            } catch (error: any) {
-                console.log(error);
-                setError(error.message);
-            } finally {
-                setIsLoading(false);
-            }
+                   setData(responseData);
+               } catch (error: any) {
+                   console.log(error);
+                   setError(error.message);
+               } finally {
+                   setIsLoading(false);
+               }
+           }
         };
 
         if (url) {
