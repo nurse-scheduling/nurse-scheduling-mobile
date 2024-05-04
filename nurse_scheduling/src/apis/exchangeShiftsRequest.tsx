@@ -22,11 +22,11 @@ export const rejectSwapShifts = async (id:string,credentials:string) => {
     const url = `${BASE_URL}/api/exchange-shift-requests/${id}/reject`;
     return await  patchFetch(url,{},credentials);
 }
-export const createExchangeShiftRequest = async (requestedShiftId:string,requeterShiftId:string,credentials:string) => {
+export const createExchangeShiftRequest = async (requestedShiftId:string,requesterShiftId:string,credentials:string) => {
     const url = `${BASE_URL}/api/exchange-shift-requests`;
     const payload = {
         requestedShiftId:requestedShiftId,
-        requesterShiftId:requeterShiftId
+        requesterShiftId:requesterShiftId
     }
     return await postFetch(url,payload,credentials);
 }
