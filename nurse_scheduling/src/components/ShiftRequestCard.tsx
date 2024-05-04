@@ -25,10 +25,10 @@ function ShiftRequestCard(Props:Props): React.JSX.Element {
                         {Props.Shift.requestedFullName}
                     </Text>
                     <Text fontSize={20}>
-                        {Props.Shift.requestedShiftStartDate}
+                        {Props.Shift.requesterShiftStartDate}
                     </Text>
                     <Text fontSize={20}>
-                        {Props.Shift.requestedShiftEndDate}
+                        {Props.Shift.requesterShiftEndDate}
                     </Text>
                 </VStack>
                 <ChangeShiftRequestIcon rotation={90} color={'black'} />
@@ -37,10 +37,10 @@ function ShiftRequestCard(Props:Props): React.JSX.Element {
                         {Props.Shift.requesterFullName}
                     </Text>
                     <Text fontSize={20}>
-                        {Props.Shift.requesterShiftStartDate}
+                        {Props.Shift.requestedShiftStartDate}
                     </Text>
                     <Text fontSize={20}>
-                        {Props.Shift.requesterShiftEndDate}
+                        {Props.Shift.requestedShiftEndDate}
                     </Text>
                 </VStack>
             </VStack>

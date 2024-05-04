@@ -1,9 +1,11 @@
 import React, {useContext, useEffect, useState} from 'react';
 import { Dimensions, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import moment from 'moment';
+import 'moment/locale/tr'
 import {AuthContext} from "../contexts/AuthContext.tsx";
 const { width } = Dimensions.get('window');
 const HomePageDateCard = () => {
+    moment().locale('tr');
     const {selectedDate, setSelectedDate} = useContext(AuthContext);
     const [activeDay, setActiveDay] = useState(moment());
     useEffect(() => {
