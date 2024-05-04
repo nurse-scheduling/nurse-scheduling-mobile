@@ -8,7 +8,7 @@ import { useIsFocused } from "@react-navigation/native";
 function NurseCard() {
     const { selectedDate, credentials } = useContext(AuthContext);
     //"-"ler "." olacak.
-    const momentDate = moment(selectedDate, "DD.MM.YYYY").format("YYYY-MM-DD");
+    const momentDate = moment(selectedDate, "DD.MM.YYYY").format("YYYY.MM.DD");
     const isFocused = useIsFocused();
     const { shifts, isLoading } = useGetShiftsByDate(momentDate, credentials, isFocused);
     const convertDate = (date: Date) => {

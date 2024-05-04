@@ -36,7 +36,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                         const pictureUrl = nurseJson.gender === "Kadın" ? "https://st3.depositphotos.com/1005049/37682/v/1600/depositphotos_376829398-stock-illustration-woman-doctor-icon-female-physician.jpg" :
                             "https://st4.depositphotos.com/1005049/37803/v/1600/depositphotos_378039344-stock-illustration-doctor-icon-male-doctor-white.jpg"
                         const updatedNurse = { ...nurseJson, pictureUrl: pictureUrl };
-                        console.log("updatedNurse", updatedNurse)
                         setNurse(updatedNurse);
                         setCredentials(credentials);
                 }

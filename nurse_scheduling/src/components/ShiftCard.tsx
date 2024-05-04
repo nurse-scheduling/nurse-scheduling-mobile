@@ -8,10 +8,9 @@ import { useIsFocused } from "@react-navigation/native";
 
 function ShiftCard() {
     const { selectedDate, credentials } = useContext(AuthContext);
-    const momentDate = moment(selectedDate, "DD.MM.YYYY").format("YYYY-MM-DD");
+    const momentDate = moment(selectedDate, "DD.MM.YYYY").format("YYYY.MM.DD");
     const isFocused = useIsFocused();
     const { shift, isLoading } = useGetMyShifts(momentDate, credentials, isFocused);
-
     const convertDate = (date: Date) => {
         const newDate = new Date(date);
         return newDate.toLocaleDateString("tr-TR", { hour: '2-digit', minute: '2-digit' });

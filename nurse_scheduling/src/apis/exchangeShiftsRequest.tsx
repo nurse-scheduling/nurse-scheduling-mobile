@@ -1,6 +1,6 @@
 
 import {BASE_URL} from "./auth.tsx";
-import {patchFetch, useFetch} from "./utilities.tsx";
+import {patchFetch, postFetch, useFetch} from "./utilities.tsx";
 import {ExchangeShiftRequestType} from "../types/ExchangeShiftRequestType.tsx";
 
 export const useFetchExchangeShiftsRequest = (credentials:string,isFocused:boolean) => {
@@ -21,6 +21,13 @@ export const swapShifts = async (id:string,credentials:string) => {
 export const rejectSwapShifts = async (id:string,credentials:string) => {
     const url = `${BASE_URL}/api/exchange-shift-requests/${id}/reject`;
     return await  patchFetch(url,{},credentials);
-
+}
+export const createExchangeShiftRequest = async (requestedShiftId:string,requeterShiftId:string,credentials:string) => {
+    const url = `${BASE_URL}/api/exchange-shift-requests`;
+    const payload = {
+        requestedShiftId:requestedShiftId,
+        requesterShiftId:requeterShiftId
+    }
+    return await postFetch(url,payload,credentials);
 }
 
