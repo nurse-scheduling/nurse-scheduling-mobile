@@ -86,7 +86,7 @@ function Login(): React.JSX.Element {
             <Box w="14%" alignItems="center">
                 <Popover trigger={triggerProps => {
                     return <Pressable {...triggerProps}>
-                        <Icon as={<ThemedIcon name={"help_outline"} type="ionicon"/>} size={6}
+                        <Icon as={<ThemedIcon name={"help"} type="ionicon"/>} size={6}
                               mr="3" color="muted.400"/>
                     </Pressable>
                 }}>
