@@ -31,22 +31,27 @@ function Login(): React.JSX.Element {
     const {setIsAuth} = useContext(AuthContext);
 
     const handleLoginSubmit = async () => {
-        if(tcno.length === 0 || password.length === 0) {
-            setErrorMessage("Lütfen tüm alanları doldurunuz.");
-            return;
-        }
-        let response = await login(tcno, password) as NurseType;
-        if(response && response.errorMessage !== null) {
-            setErrorMessage(response.errorMessage);
-            return;
-        }
+        try{
+            if(tcno.length === 0 || password.length === 0) {
+                setErrorMessage("Lütfen tüm alanları doldurunuz.");
+                return;
+            }
+            let response = await login(tcno, password) as NurseType;
+            if(response && response.errorMessage !== null) {
+                setErrorMessage(response.errorMessage);
+                return;
+            }
 
-        const credentials = Buffer.from(`${tcno}:${password}`, 'utf-8').toString('base64');
-        await AsyncStorage.setItem("nurse", JSON.stringify(response));
-        await AsyncStorage.setItem("basicAuth", credentials);
-        await AsyncStorage.setItem("authenticated", "true");
-        await AsyncStorage.setItem("login-time", new Date().getTime().toString());
-        setIsAuth(true);
+            const credentials = Buffer.from(`${tcno}:${password}`, 'utf-8').toString('base64');
+            await AsyncStorage.setItem("nurse", JSON.stringify(response));
+            await AsyncStorage.setItem("basicAuth", credentials);
+            await AsyncStorage.setItem("authenticated", "true");
+            await AsyncStorage.setItem("login-time", new Date().getTime().toString());
+            setIsAuth(true);
+        }
+        catch (error) {
+            console.error("Error while logging in:", error);
+        }
     };
 
     useEffect(() => {
