@@ -104,7 +104,7 @@ function CreateShiftRequestContent(): React.JSX.Element {
                                  label2={"endDate"}
                                  value={"id"}
                                  disabled={!selectedNurseShifts|| selectedNurseShifts.length==0 || !selectedNurse} />
-                <SmallButton onPress={() => {createShiftRequest()}}
+                <SmallButton onPress={createShiftRequest}
                              text={"Değişim Talep Et"}
                              color={(!selectedMyShift || !selectedShift || !selectedNurse)?"gray.300":"blue.300"}
                              textColor={"white"}
