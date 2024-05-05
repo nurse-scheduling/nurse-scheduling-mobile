@@ -11,7 +11,7 @@ import { useIsFocused } from "@react-navigation/native";
 
 function ShiftSelect(): React.JSX.Element {
     const [selectedDays, setSelectedDays] = useState<string[]>([]);
-    const [validaitonSelectedDays, setValidationSelectedDays] = useState<WorkDayType>();
+    const [validationSelectedDays, setValidationSelectedDays] = useState<WorkDayType>();
     const [disabled, setDisabled] = useState<boolean>(true);
     const [isModalOpen , setIsModalOpen] = useState<boolean>(false);
     const today = new Date();
@@ -46,14 +46,15 @@ function ShiftSelect(): React.JSX.Element {
         }
     }, [workDays]);
     useEffect(() => {
-        setDisabled(areDaysEqual(validaitonSelectedDays?.workDate));
+        setDisabled(areDaysEqual(validationSelectedDays?.workDate));
     }, [selectedDays]);
 
     const handleSelectedDays = async () => {
         try {
             const workDate = selectedDays.map(dateString => moment(dateString, "DD.MM.YYYY").toDate());
             const response = await postWorkDays(workDate, credentials) as WorkDayType;
-            const message = response?.message !== null ? "Çalışma Günleriniz Başarıyla Kaydedildi!" : "Çalışma Günleriniz Kaydedilirken Bir Hata Oluştu!";
+            const message = response?.message !== null ? "Çalışma Günleriniz Başarıyla Kaydedildi!"
+                : "Çalışma Günleriniz Kaydedilirken Bir Hata Oluştu!";
             setIsModalOpen(true);
             setModalMessage(message);
             setValidationSelectedDays(response)
