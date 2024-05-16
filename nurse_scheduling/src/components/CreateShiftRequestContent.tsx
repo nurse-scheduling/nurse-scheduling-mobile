@@ -4,11 +4,12 @@ import SelectComponent from "./SelectComponent.tsx";
 import SmallButton from "./SmallButton.tsx";
 import {AuthContext} from "../contexts/AuthContext.tsx";
 import {useGetShiftsByMonthAndYear} from "../apis/shifts.tsx";
-import {useIsFocused} from "@react-navigation/native";
+import {useIsFocused, useNavigation} from "@react-navigation/native";
 import {NurseType} from "../types/NurseType.tsx";
 import {ShiftType} from "../types/ShiftType.tsx";
 import {useFetchNursesList} from "../apis/nurse.tsx";
 import {createExchangeShiftRequest} from "../apis/exchangeShiftsRequest.tsx";
+import {StackNavigationProp} from "@react-navigation/stack";
 
 
 
@@ -27,6 +28,7 @@ function CreateShiftRequestContent(): React.JSX.Element {
     const {nurses} = useFetchNursesList(credentials,isFocused,nurse.departmentName);
     const [modalMessage, setModalMessage] = useState<string>('');
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const navigation = useNavigation<StackNavigationProp<any>>();
 
     useEffect(() => {
         setNurseList(nurses?.filter((item: NurseType) => item.id != nurse.id));
@@ -55,6 +57,7 @@ function CreateShiftRequestContent(): React.JSX.Element {
             createExchangeShiftRequest(selectedMyShift.id, selectedShift.id, credentials).then((response) => {
                 setIsOpen(true);
                 setModalMessage(response.toString());
+                navigation.navigate("SuccessfulPageScreen", {screen: "SuccessfulPage"});
             });
         }
     }
