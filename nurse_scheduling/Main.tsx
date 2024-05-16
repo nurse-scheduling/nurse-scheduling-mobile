@@ -13,6 +13,7 @@ import Login from "./src/pages/Login.tsx";
 import MyShifts from "./src/pages/MyShifts.tsx";
 import CreateShiftRequest from "./src/pages/CreateShiftRequest.tsx";
 import {AuthContext} from "./src/contexts/AuthContext.tsx";
+import SuccessfulPage from "./src/pages/SuccessfulPage.tsx";
 
 const Tabs = createBottomTabNavigator();
 
@@ -25,6 +26,7 @@ ShiftSelectScreen:undefined,
 type ChangeShiftParamList = {
 ChangeShiftRequestScreen: undefined,
 CreateShiftRequestScreen:undefined,
+SuccessfulPageScreen:undefined,
 }
 
 type ProfileStackParamList = {
@@ -70,6 +72,11 @@ const ChangeShiftStackScreen = () => (
         <ChangeShiftStack.Screen
             name={"CreateShiftRequestScreen"}
             component={CreateShiftRequest}
+            options={{headerShown: false}}
+        />
+        <ChangeShiftStack.Screen
+            name={"SuccessfulPageScreen"}
+            component={SuccessfulPage}
             options={{headerShown: false}}
         />
     </ChangeShiftStack.Navigator>
