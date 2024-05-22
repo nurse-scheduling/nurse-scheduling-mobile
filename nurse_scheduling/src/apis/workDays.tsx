@@ -2,9 +2,9 @@ import {BASE_URL} from "./auth.tsx";
 import {postFetch, useFetch} from "./utilities.tsx";
 import {WorkDayType} from "../types/WorkDayType.tsx";
 
-export const postWorkDays = async (workDays:Date[] , credentials: string) => {
+export const postWorkDays = async (workDays:Date[] , credentials: string,month:string,year:string) => {
     const url = `${BASE_URL}/api/workdays`;
-    const payload = {workDate:workDays};
+    const payload = {workDate:workDays,month:month,year:year};
     return await postFetch(url, payload, credentials);
 }
 

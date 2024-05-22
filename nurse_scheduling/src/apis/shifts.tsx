@@ -32,3 +32,19 @@ export const useGetShiftsByMonthAndYear = (id:string,month:string,year:string,cr
     }
     return {shifts,isLoading};
 }
+
+export function useFetchAvailableShiftsByNurseIdAndShift(id: string,credentials: string,month:string,year:string,shiftId:string,isFocused:boolean) {
+
+    let url = `${BASE_URL}/api/shifts/${shiftId}/${id}?month=${month}&year=${year}`;
+
+
+    const {data,isLoading} = useFetch(url,isFocused, credentials);
+
+    let shifts: ShiftType[] | undefined;
+
+    if (data) {
+        shifts = data as ShiftType[];
+    }
+
+    return {shifts,isLoading};
+}

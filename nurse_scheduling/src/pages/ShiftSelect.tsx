@@ -15,7 +15,7 @@ function ShiftSelect(): React.JSX.Element {
     const [disabled, setDisabled] = useState<boolean>(true);
     const [isModalOpen , setIsModalOpen] = useState<boolean>(false);
     const today = new Date();
-    const openDays = [4, 23, 25, 26, 27, 28];
+    const openDays = [22, 25, 26, 27, 28];
     const { credentials } = useContext(AuthContext);
     const month = (today.getMonth() + 2).toString();
     const year = today.getFullYear().toString();
@@ -52,7 +52,13 @@ function ShiftSelect(): React.JSX.Element {
     const handleSelectedDays = async () => {
         try {
             const workDate = selectedDays.map(dateString => moment(dateString, "DD.MM.YYYY").toDate());
-            const response = await postWorkDays(workDate, credentials) as WorkDayType;
+
+            if(workDate.length < daysOfAMonth.length-3) {
+                setIsModalOpen(true);
+                setModalMessage(`Çalışma Günleriniz Kaydedilirken Bir Hata Oluştu! Haziran Ayı için En Az ${daysOfAMonth.length-3} Gün Seçmelisiniz!`);
+                return;
+            }
+            const response = await postWorkDays(workDate, credentials,month,year) as WorkDayType;
             const message = response?.message !== null ? "Çalışma Günleriniz Başarıyla Kaydedildi!"
                 : "Çalışma Günleriniz Kaydedilirken Bir Hata Oluştu!";
             setIsModalOpen(true);

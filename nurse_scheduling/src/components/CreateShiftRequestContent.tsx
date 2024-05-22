@@ -1,9 +1,9 @@
 import React, {useContext, useEffect,useState} from "react";
-import {Button, Modal, Stack, Text, VStack} from "native-base";
+import {Stack, Text, VStack} from "native-base";
 import SelectComponent from "./SelectComponent.tsx";
 import SmallButton from "./SmallButton.tsx";
 import {AuthContext} from "../contexts/AuthContext.tsx";
-import {useGetShiftsByMonthAndYear} from "../apis/shifts.tsx";
+import {useFetchAvailableShiftsByNurseIdAndShift, useGetShiftsByMonthAndYear} from "../apis/shifts.tsx";
 import {useIsFocused, useNavigation} from "@react-navigation/native";
 import {NurseType} from "../types/NurseType.tsx";
 import {ShiftType} from "../types/ShiftType.tsx";
@@ -21,13 +21,11 @@ function CreateShiftRequestContent(): React.JSX.Element {
     const {nurse,credentials} = useContext(AuthContext);
     const isFocused = useIsFocused();
     const today = new Date();
-    const month = (today.getMonth()+1).toString();
+    const month = (today.getMonth()+2).toString();
     const year = today.getFullYear().toString();
     const {shifts : myShifts } = useGetShiftsByMonthAndYear(nurse.id,month,year,credentials,isFocused);
-    const {shifts : selectedNurseShifts } = useGetShiftsByMonthAndYear(selectedNurse?.id ||'',month,year,credentials,isFocused);
+    const {shifts : selectedNurseShifts } = useFetchAvailableShiftsByNurseIdAndShift(selectedNurse?.id ||'',credentials,month,year,selectedMyShift?.id || "",isFocused);
     const {nurses} = useFetchNursesList(credentials,isFocused,nurse.departmentName);
-    const [modalMessage, setModalMessage] = useState<string>('');
-    const [isOpen, setIsOpen] = useState<boolean>(false);
     const navigation = useNavigation<StackNavigationProp<any>>();
 
     useEffect(() => {
@@ -55,25 +53,10 @@ function CreateShiftRequestContent(): React.JSX.Element {
     const createShiftRequest = async () => {
         if (selectedNurse && selectedShift && selectedMyShift) {
             createExchangeShiftRequest(selectedMyShift.id, selectedShift.id, credentials).then((response) => {
-                setIsOpen(true);
-                setModalMessage(response.toString());
                 navigation.navigate("SuccessfulPageScreen", {screen: "SuccessfulPage"});
             });
         }
     }
-    const closeModal = () => {
-        setIsOpen(false);
-        setModalMessage('');
-    }
-    const ModalContent = () => (
-        <Modal.Content>
-            <Modal.CloseButton />
-            <Modal.Body>{modalMessage}</Modal.Body>
-            <Modal.Footer>
-                <Button colorScheme="blue" onPress={closeModal}>Tamam</Button>
-            </Modal.Footer>
-        </Modal.Content>
-    );
     return (
         <Stack space={5} alignItems={"center"} paddingTop={32}>
             <Text fontSize={'xl'}>
@@ -114,9 +97,7 @@ function CreateShiftRequestContent(): React.JSX.Element {
                              textSize={'16'}
                              disabled={!selectedMyShift || !selectedShift || !selectedNurse}/>
             </VStack>
-            <Modal isOpen={isOpen} onClose={closeModal}>
-                <ModalContent/>
-            </Modal>
+
 
         </Stack>
     );
