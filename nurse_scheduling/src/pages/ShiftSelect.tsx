@@ -16,7 +16,7 @@ function ShiftSelect(): React.JSX.Element {
     const [isModalOpen , setIsModalOpen] = useState<boolean>(false);
     const today = new Date();
     const openDays = [22, 25, 26, 27, 28];
-    const { credentials } = useContext(AuthContext);
+    const { credentials, nurse } = useContext(AuthContext);
     const month = (today.getMonth() + 2).toString();
     const year = today.getFullYear().toString();
     const isFocused = useIsFocused();
@@ -58,12 +58,11 @@ function ShiftSelect(): React.JSX.Element {
                 setModalMessage(`Çalışma Günleriniz Kaydedilirken Bir Hata Oluştu! Haziran Ayı için En Az ${daysOfAMonth.length-3} Gün Seçmelisiniz!`);
                 return;
             }
-            const response = await postWorkDays(workDate, credentials,month,year) as WorkDayType;
-            const message = response?.message !== null ? "Çalışma Günleriniz Başarıyla Kaydedildi!"
-                : "Çalışma Günleriniz Kaydedilirken Bir Hata Oluştu!";
+            const response = await postWorkDays(workDate, credentials, month, year) as WorkDayType;
+            const message = response?.message ? "Çalışma Günleriniz Başarıyla Kaydedildi!" : "Çalışma Günleriniz Kaydedilirken Bir Hata Oluştu!";
             setIsModalOpen(true);
             setModalMessage(message);
-            setValidationSelectedDays(response)
+            setValidationSelectedDays(response);
             const responseDate = response?.workDate.map(date => new Date(date).toLocaleDateString("tr-TR"));
             setSelectedDays(responseDate);
             setDisabled(areDaysEqual(workDays?.workDate));
@@ -71,11 +70,14 @@ function ShiftSelect(): React.JSX.Element {
             console.log(e);
             setModalMessage("Çalışma Günleriniz Kaydedilirken Bir Hata Oluştu!");
         }
-    }
+    };
+
     const closeModal = () => {
-        setModalMessage("")
+        setModalMessage("");
         setIsModalOpen(false);
-    }
+    };
+
+
     const checkSelectedDays = (date: string) => selectedDays.includes(date);
     const areDaysEqual = (workDate: Date[] | undefined) =>
         JSON.stringify(selectedDays) === JSON.stringify(workDate?.map(date =>
@@ -91,6 +93,16 @@ function ShiftSelect(): React.JSX.Element {
             </Modal.Footer>
         </Modal.Content>
     );
+    if (nurse.role === "CHARGE") {
+        return (
+           <Center flex={1} backgroundColor={'white'}>
+                   <Header />
+                   <Text fontSize={"xl"} color={"red.600"}>
+                       Sorumlu hemşireler çalışmak istediği günleri seçme özelliğinden yararlanamaz.
+                   </Text>
+           </Center>
+        );
+    }
 
     return (
         <Center flex={1} backgroundColor={'white'}>

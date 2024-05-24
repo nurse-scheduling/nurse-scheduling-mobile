@@ -20,7 +20,7 @@ export default function Header() {
                     <Text bold fontSize="xl">{nurse.firstName} {nurse.lastName}</Text>
                 </VStack>
                 <Pressable onPress={() => {
-                    navigation.navigate("MyProfileScreen", {screen: "MyProfile"})
+                    navigation.navigate("MyProfile", {screen: "MyProfileScreen"})
                 }}>
                     <Avatar bg="#5F374B" source={{uri: nurse.pictureUrl}} size="lg"></Avatar>
                 </Pressable>

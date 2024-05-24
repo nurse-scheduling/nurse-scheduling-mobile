@@ -6,11 +6,11 @@ import {
     Pressable,
     Stack,
     Text,
-    Spinner, // Import Spinner for the skeleton loader
+    Spinner,
 } from "native-base";
 import SmallButton from "./SmallButton.tsx";
 import ShiftRequestCard from "./ShiftRequestCard.tsx";
-import {useIsFocused, useNavigation} from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { AuthContext } from "../contexts/AuthContext.tsx";
 import {
@@ -25,9 +25,10 @@ function ChangeShiftRequestContent() {
     const [selectedShift, setSelectedShift] = useState<ExchangeShiftRequestType | null>(null);
     const navigation = useNavigation<StackNavigationProp<any>>();
     const isFocused = useIsFocused();
-    const { credentials } = useContext(AuthContext);
-    const { exchangeShiftRequests, isLoading } = useFetchExchangeShiftsRequest(credentials,isFocused);
+    const { credentials, nurse } = useContext(AuthContext);
+    const { exchangeShiftRequests, isLoading } = useFetchExchangeShiftsRequest(credentials, isFocused);
     const [requests, setRequests] = useState<ExchangeShiftRequestType[]>([]);
+
     useEffect(() => {
         exchangeShiftRequests ? setRequests(exchangeShiftRequests) : setRequests([]);
     }, [exchangeShiftRequests]);
@@ -44,16 +45,17 @@ function ChangeShiftRequestContent() {
     const acceptShift = () => {
         if (selectedShift) {
             swapShifts(selectedShift.id, credentials).then(() => {
-                removeRequest(selectedShift.id)
+                removeRequest(selectedShift.id);
                 setModalVisible(false);
                 setSelectedShift(null);
             });
         }
     };
+
     const rejectShift = () => {
         if (selectedShift) {
             rejectSwapShifts(selectedShift.id, credentials).then(() => {
-                removeRequest(selectedShift.id)
+                removeRequest(selectedShift.id);
                 setModalVisible(false);
                 setSelectedShift(null);
             });
@@ -62,13 +64,22 @@ function ChangeShiftRequestContent() {
 
     const removeRequest = (id: string) => {
         setRequests(requests.filter((request) => request.id !== id));
+    };
+
+    if (nurse.role === "CHARGE") {
+        return (
+            <Stack space={2} alignItems={"center"} paddingTop={72}>
+                <Text fontSize={"xl"} color={"red.600"}>
+                    Sorumlu Hemşireler vardiya değişim isteklerinde bulunamazlar.
+                </Text>
+            </Stack>
+        );
     }
+
     return (
         <Stack space={2} alignItems={"center"} paddingTop={32}>
             <SmallButton
-                onPress={() => {
-                    navigateToCreateShiftRequest();
-                }}
+                onPress={navigateToCreateShiftRequest}
                 text={"Vardiya Değişimi Talep Et"}
                 color={"blue.300"}
                 textColor={"white"}
@@ -80,13 +91,11 @@ function ChangeShiftRequestContent() {
             ) : requests.length > 0 ? (
                 <FlatList
                     data={requests}
-                    renderItem={(info: { item: ExchangeShiftRequestType }) => {
-                        return (
-                            <Pressable onPress={() => changeShift(info.item)}>
-                                <ShiftRequestCard Shift={info.item} />
-                            </Pressable>
-                        );
-                    }}
+                    renderItem={({ item }) => (
+                        <Pressable onPress={() => changeShift(item)}>
+                            <ShiftRequestCard Shift={item} />
+                        </Pressable>
+                    )}
                     keyExtractor={(item: ExchangeShiftRequestType) => item.id}
                 />
             ) : (
@@ -104,19 +113,15 @@ function ChangeShiftRequestContent() {
                                     width={"16"}
                                     variant="solid"
                                     colorScheme="success"
-                                    onPress={() => {
-                                        acceptShift();
-                                    }}
+                                    onPress={acceptShift}
                                 >
                                     Evet
                                 </Button>
                                 <Button
                                     width={"16"}
-                                    variant={"solid"}
-                                    colorScheme={"error"}
-                                    onPress={() => {
-                                        rejectShift();
-                                    }}
+                                    variant="solid"
+                                    colorScheme="error"
+                                    onPress={rejectShift}
                                 >
                                     Hayır
                                 </Button>
@@ -128,4 +133,5 @@ function ChangeShiftRequestContent() {
         </Stack>
     );
 }
+
 export default ChangeShiftRequestContent;
