@@ -1,36 +1,49 @@
 import React from 'react';
+import {Box, Text, FlatList} from "native-base";
 import Header from "../components/Header.tsx";
-import {Box,  Text} from "native-base";
 import HomePageDateCard from "../components/HomePageDateCard.tsx";
 import ShiftCard from "../components/ShiftCard.tsx";
 import NurseCard from "../components/NurseCard.tsx";
 
-
-function HomePage(): React.JSX.Element {
-
-    return (
-        <Box flex={1} backgroundColor={'white'}>
-            <Header></Header>
-            <Box mt="24">
-
-                <Box>
-                    <HomePageDateCard/>
-                </Box>,
+const HomePage = () => {
+    const sections = [
+        {
+            key: 'header', component: <Box m="2" mt="4">
+                <Header/>
+            </Box>
+        },
+        {
+            key: 'dateCard', component: <Box m="2" mt="24">
+                <HomePageDateCard/>
+            </Box>
+        },
+        {
+            key: 'shiftCard', component: (
                 <Box m="2" mt="4">
                     <Text bold>Vardiyalarım</Text>
                     <ShiftCard/>
-                </Box>,
-                <Box m="2" mt="4">
+                </Box>
+            )
+        },
+        {
+            key: 'nurseCard', component: (
+                <Box m="2" mt="">
                     <Text bold>Diğer Çalışanlar</Text>
                     <NurseCard/>
                 </Box>
+            )
+        },
+    ];
 
-            </Box>
-
-
+    return (
+        <Box flex={1} backgroundColor="white">
+            <FlatList
+                data={sections}
+                renderItem={({item}) => <Box>{item.component}</Box>}
+                keyExtractor={(item) => item.key}
+            />
         </Box>
     );
 }
-
 
 export default HomePage;
