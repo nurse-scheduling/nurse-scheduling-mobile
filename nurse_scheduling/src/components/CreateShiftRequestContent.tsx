@@ -35,13 +35,13 @@ function CreateShiftRequestContent(): React.JSX.Element {
 
     useEffect(() => {
         if (myShifts) {
-            myShifts.sort((a: ShiftType, b: ShiftType) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
+            myShifts.filter(value => value.startDate> today).sort((a: ShiftType, b: ShiftType) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
         }
     }, [myShifts]);
 
     useEffect(() => {
         if (selectedNurseShifts) {
-            selectedNurseShifts.sort((a: ShiftType, b: ShiftType) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
+            selectedNurseShifts.filter(value => value.startDate>today).sort((a: ShiftType, b: ShiftType) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
         }
     }, [selectedNurseShifts]);
 
