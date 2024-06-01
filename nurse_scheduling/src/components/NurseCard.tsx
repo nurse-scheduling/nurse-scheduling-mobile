@@ -7,13 +7,18 @@ import { useIsFocused } from "@react-navigation/native";
 
 function NurseCard() {
     const { selectedDate, credentials } = useContext(AuthContext);
+    moment().locale("tr");
     const momentDate = moment(selectedDate, "DD.MM.YYYY").format("YYYY.MM.DD");
     const isFocused = useIsFocused();
     const { shifts, isLoading } = useGetShiftsByDate(momentDate, credentials, isFocused);
 
     const convertDate = (date: Date) => {
         const newDate = new Date(date);
-        return newDate.toLocaleDateString("tr-TR", { hour: '2-digit', minute: '2-digit' });
+        return newDate.toLocaleDateString("tr-TR", {
+            hour: '2-digit',
+            minute: '2-digit',
+            timeZone: 'UTC'
+        });
     }
 
     return (

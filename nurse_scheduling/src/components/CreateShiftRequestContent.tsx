@@ -1,15 +1,15 @@
-import React, {useContext, useEffect, useState} from "react";
-import {Alert, Stack, Text, VStack, Modal, Button} from "native-base";
+import React, { useContext, useEffect, useState } from "react";
+import { Alert, Stack, Text, VStack, Modal, Button } from "native-base";
 import SelectComponent from "./SelectComponent.tsx";
 import SmallButton from "./SmallButton.tsx";
-import {AuthContext} from "../contexts/AuthContext.tsx";
-import {useFetchAvailableShiftsByNurseIdAndShift, useGetShiftsByMonthAndYear} from "../apis/shifts.tsx";
-import {useIsFocused, useNavigation} from "@react-navigation/native";
-import {NurseType} from "../types/NurseType.tsx";
-import {ShiftType} from "../types/ShiftType.tsx";
-import {useFetchNursesList} from "../apis/nurse.tsx";
-import {createExchangeShiftRequest} from "../apis/exchangeShiftsRequest.tsx";
-import {StackNavigationProp} from "@react-navigation/stack";
+import { AuthContext } from "../contexts/AuthContext.tsx";
+import { useFetchAvailableShiftsByNurseIdAndShift, useGetShiftsByMonthAndYear } from "../apis/shifts.tsx";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
+import { NurseType } from "../types/NurseType.tsx";
+import { ShiftType } from "../types/ShiftType.tsx";
+import { useFetchNursesList } from "../apis/nurse.tsx";
+import { createExchangeShiftRequest } from "../apis/exchangeShiftsRequest.tsx";
+import { StackNavigationProp } from "@react-navigation/stack";
 
 function CreateShiftRequestContent(): React.JSX.Element {
     const [selectedNurse, setSelectedNurse] = useState<NurseType>();
@@ -17,14 +17,16 @@ function CreateShiftRequestContent(): React.JSX.Element {
     const [selectedMyShift, setSelectedMyShift] = useState<ShiftType>();
     const [nurseList, setNurseList] = useState<NurseType[]>();
     const [error, setError] = useState<string>();
-    const {nurse, credentials} = useContext(AuthContext);
+    const [convertedMyShifts, setConvertedMyShifts] = useState<ShiftType[]>([]);
+    const [convertedNurseShifts, setConvertedNurseShifts] = useState<ShiftType[]>([]);
+    const { nurse, credentials } = useContext(AuthContext);
     const isFocused = useIsFocused();
     const today = new Date();
     const month = (today.getMonth() + 1).toString();
     const year = today.getFullYear().toString();
-    const {shifts: myShifts} = useGetShiftsByMonthAndYear(nurse.id, month, year, credentials, isFocused);
-    const {shifts: selectedNurseShifts} = useFetchAvailableShiftsByNurseIdAndShift(selectedNurse?.id || '', credentials, month, year, selectedMyShift?.id || "", isFocused);
-    const {nurses} = useFetchNursesList(credentials, isFocused, nurse.departmentName);
+    const { shifts: myShifts } = useGetShiftsByMonthAndYear(nurse.id, month, year, credentials, isFocused);
+    const { shifts: selectedNurseShifts } = useFetchAvailableShiftsByNurseIdAndShift(selectedNurse?.id || '', credentials, month, year, selectedMyShift?.id || "", isFocused);
+    const { nurses } = useFetchNursesList(credentials, isFocused, nurse.departmentName);
     const navigation = useNavigation<StackNavigationProp<any>>();
 
     useEffect(() => {
@@ -35,13 +37,37 @@ function CreateShiftRequestContent(): React.JSX.Element {
 
     useEffect(() => {
         if (myShifts) {
-            myShifts.filter(value => value.startDate> today).sort((a: ShiftType, b: ShiftType) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
+            const convertedShifts = myShifts.map(shift => {
+                const start = new Date(shift.startDate);
+                const end = new Date(shift.endDate);
+                const utcStart = new Date(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate(), start.getUTCHours(), start.getUTCMinutes());
+                const utcEnd = new Date(end.getUTCFullYear(), end.getUTCMonth(), end.getUTCDate(), end.getUTCHours(), end.getUTCMinutes());
+                return {
+                    ...shift,
+                    startDate: utcStart,
+                    endDate: utcEnd,
+                };
+            }).filter(value => new Date(value.startDate) > today)
+                .sort((a: ShiftType, b: ShiftType) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
+            setConvertedMyShifts(convertedShifts);
         }
     }, [myShifts]);
 
     useEffect(() => {
         if (selectedNurseShifts) {
-            selectedNurseShifts.filter(value => value.startDate>today).sort((a: ShiftType, b: ShiftType) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
+            const convertedShifts = selectedNurseShifts.map(shift => {
+                const start = new Date(shift.startDate);
+                const end = new Date(shift.endDate);
+                const utcStart = new Date(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate(), start.getUTCHours(), start.getUTCMinutes());
+                const utcEnd = new Date(end.getUTCFullYear(), end.getUTCMonth(), end.getUTCDate(), end.getUTCHours(), end.getUTCMinutes());
+                return {
+                    ...shift,
+                    startDate: utcStart,
+                    endDate: utcEnd,
+                };
+            }).filter(value => new Date(value.startDate) > today)
+                .sort((a: ShiftType, b: ShiftType) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
+            setConvertedNurseShifts(convertedShifts);
         }
     }, [selectedNurseShifts]);
 
@@ -63,14 +89,14 @@ function CreateShiftRequestContent(): React.JSX.Element {
 
     const convertDate = (date: Date) => {
         const newDate = new Date(date);
-        return newDate.toLocaleDateString("tr-TR", {hour: '2-digit', minute: '2-digit'});
+        return newDate.toLocaleDateString("tr-TR", { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Istanbul' });
     };
 
     const createShiftRequest = async () => {
         if (selectedNurse && selectedShift && selectedMyShift) {
             createExchangeShiftRequest(selectedMyShift.id, selectedShift.id, credentials).then((response) => {
                 if (response === "Vardiya değişim isteği başarıyla oluşturuldu") {
-                    navigation.navigate("SuccessfulPageScreen", {screen: "SuccessfulPage"});
+                    navigation.navigate("SuccessfulPageScreen", { screen: "SuccessfulPage" });
                 } else {
                     setError(response.toString());
                 }
@@ -87,36 +113,36 @@ function CreateShiftRequestContent(): React.JSX.Element {
                 <SelectComponent selectedValue={selectedMyShift?.id}
                                  display={selectedMyShift ? convertDate(selectedMyShift.startDate) : ""}
                                  placeholder={"Vardiyanızı Seçiniz"}
-                                 list={myShifts || []}
+                                 list={convertedMyShifts || []}
                                  onValueChange={selectMyShift}
                                  label={"startDate"}
                                  label2={"endDate"}
                                  value={"id"}
-                                 disabled={!myShifts || myShifts.length == 0}/>
+                                 disabled={!convertedMyShifts || convertedMyShifts.length == 0} />
                 <SelectComponent selectedValue={selectedNurse?.id}
-                                 display={selectedNurse?.name}
+                                 display={selectedNurse ? `${selectedNurse.firstName} ${selectedNurse.lastName}` : ""}
                                  placeholder={"Hemşire Seçiniz"}
                                  list={nurseList || []}
                                  onValueChange={selectNurse}
                                  label={"firstName"}
                                  label2={"lastName"}
                                  value={"id"}
-                                 disabled={!nurseList || nurseList.length == 0 || !selectedMyShift}/>
+                                 disabled={!nurseList || nurseList.length == 0 || !selectedMyShift} />
                 <SelectComponent selectedValue={selectedShift?.id}
                                  display={selectedShift ? convertDate(selectedShift.startDate) : ""}
                                  placeholder={"Hemşirenin Vardiyasını Seçiniz"}
-                                 list={selectedNurseShifts?.filter((item: ShiftType) => item.nurseId === selectedNurse?.id) || []}
+                                 list={convertedNurseShifts?.filter((item: ShiftType) => item.nurseId === selectedNurse?.id) || []}
                                  onValueChange={selectShift}
                                  label={"startDate"}
                                  label2={"endDate"}
                                  value={"id"}
-                                 disabled={!selectedNurseShifts || selectedNurseShifts.length == 0 || !selectedNurse}/>
+                                 disabled={!convertedNurseShifts || convertedNurseShifts.length == 0 || !selectedNurse} />
                 <SmallButton onPress={createShiftRequest}
                              text={"Değişim Talep Et"}
                              color={(!selectedMyShift || !selectedShift || !selectedNurse) ? "gray.300" : "blue.300"}
                              textColor={"white"}
                              textSize={'16'}
-                             disabled={!selectedMyShift || !selectedShift || !selectedNurse}/>
+                             disabled={!selectedMyShift || !selectedShift || !selectedNurse} />
             </VStack>
             <Modal isOpen={!!error} onClose={() => setError(undefined)}>
                 <Modal.Content maxWidth="400px">
