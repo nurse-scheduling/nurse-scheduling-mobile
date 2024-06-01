@@ -26,7 +26,7 @@ function NurseCard() {
                     keyExtractor={(item) => `${item.nurseFirstName}-${item.nurseLastName}`}
                     renderItem={({ item }) => (
                         <Box
-                            backgroundColor="gray.300"
+                            backgroundColor="blue.300"
                             rounded="xl"
                             p="2"
                             m="1"

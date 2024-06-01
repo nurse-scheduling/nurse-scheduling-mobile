@@ -17,7 +17,7 @@ function ShiftCard() {
     }
 
     return (
-        <Box style={styles.container} backgroundColor="gray.300" rounded="xl" p="4" mt="2" alignItems="center">
+        <Box style={styles.container} backgroundColor="blue.300" rounded="xl" p="4" mt="2" alignItems="center">
             {isLoading ? (
                 <Spinner accessibilityLabel="Loading shifts" />
             ) : (

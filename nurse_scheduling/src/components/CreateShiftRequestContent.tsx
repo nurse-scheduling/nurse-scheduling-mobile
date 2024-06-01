@@ -20,7 +20,7 @@ function CreateShiftRequestContent(): React.JSX.Element {
     const {nurse, credentials} = useContext(AuthContext);
     const isFocused = useIsFocused();
     const today = new Date();
-    const month = (today.getMonth() + 2).toString();
+    const month = (today.getMonth() + 1).toString();
     const year = today.getFullYear().toString();
     const {shifts: myShifts} = useGetShiftsByMonthAndYear(nurse.id, month, year, credentials, isFocused);
     const {shifts: selectedNurseShifts} = useFetchAvailableShiftsByNurseIdAndShift(selectedNurse?.id || '', credentials, month, year, selectedMyShift?.id || "", isFocused);

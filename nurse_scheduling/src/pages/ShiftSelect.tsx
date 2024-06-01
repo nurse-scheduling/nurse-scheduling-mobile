@@ -15,7 +15,7 @@ function ShiftSelect(): React.JSX.Element {
     const [disabled, setDisabled] = useState<boolean>(true);
     const [isModalOpen , setIsModalOpen] = useState<boolean>(false);
     const today = new Date();
-    const openDays = [22, 25, 26, 27, 28];
+    const openDays = [25, 26, 27, 28,29,30,31];
     const { credentials, nurse } = useContext(AuthContext);
     const month = (today.getMonth() + 2).toString();
     const year = today.getFullYear().toString();
@@ -108,7 +108,7 @@ function ShiftSelect(): React.JSX.Element {
         <Center flex={1} backgroundColor={'white'}>
             <Header />
             <Stack space={4} alignItems="center" paddingTop={16}>
-                {openDays.includes(today.getDate()) ? (
+                {!openDays.includes(today.getDate()) ? (
                     <>
                         <Text fontSize={20}> Hangi Günler Çalışacağınızı Belirtiniz </Text>
                         <Box borderRadius={25} backgroundColor={'blue.300'} alignItems={"center"}
@@ -130,8 +130,7 @@ function ShiftSelect(): React.JSX.Element {
                     </>
                 ) : (
                     <>
-                        <Text fontSize={20}>Sadece Her Ayın 25,26,27 ve 28'inci günleri bir sonraki ay için çalışma günü
-                            seçebilirsiniz</Text>
+                        <Text fontSize={20}>Her Ayın 25'inden sonra çalışma günü seçemezsiniz</Text>
                     </>
                 )}
             </Stack>

@@ -9,7 +9,7 @@ type Props={
 
 function ShiftRequestCard(Props:Props): React.JSX.Element {
     return (
-        <Box backgroundColor={'gray.200'}
+        <Box backgroundColor={'blue.300'}
              minWidth={'90%'}
              height={300}
              justifyContent={'center'}

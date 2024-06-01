@@ -19,7 +19,7 @@ const HomePage = () => {
         },
         {
             key: 'shiftCard', component: (
-                <Box m="2" mt="4">
+                <Box m="2" mt="4" pl="5" pr="5">
                     <Text bold>Vardiyalarım</Text>
                     <ShiftCard/>
                 </Box>

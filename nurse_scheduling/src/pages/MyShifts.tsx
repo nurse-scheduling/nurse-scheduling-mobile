@@ -12,7 +12,7 @@ interface ShiftEvent {
 export default function MyShifts() {
     const {credentials,nurse} = useContext(AuthContext);
     const isFocused = useIsFocused();
-    const month = (new Date().getMonth()+2).toString();
+    const month = (new Date().getMonth()+1).toString();
     const year = new Date().getFullYear().toString();
     const {shifts} = useGetShiftsByMonthAndYear(nurse.id,month,year,credentials,isFocused);
     const [events, setEvents] = useState<ShiftEvent[]>([]); // Type annotation for events
