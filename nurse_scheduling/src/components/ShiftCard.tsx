@@ -13,7 +13,11 @@ function ShiftCard() {
     const { shift, isLoading } = useGetMyShifts(momentDate, credentials, isFocused);
     const convertDate = (date: Date) => {
         const newDate = new Date(date);
-        return newDate.toLocaleDateString("tr-TR", { hour: '2-digit', minute: '2-digit' });
+        return newDate.toLocaleDateString("tr-TR", {
+            hour: '2-digit',
+            minute: '2-digit',
+            timeZone: 'UTC'
+        });
     }
 
     return (

@@ -28,7 +28,7 @@ const HomePage = () => {
         {
             key: 'nurseCard', component: (
                 <Box m="2" mt="">
-                    <Text bold>Diğer Çalışanlar</Text>
+                    <Text ml={"4"} bold>Diğer Çalışanlar</Text>
                     <NurseCard/>
                 </Box>
             )
